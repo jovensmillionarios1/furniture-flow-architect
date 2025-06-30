@@ -56,7 +56,7 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
     <Card className="relative animate-in slide-in-from-top-4 duration-300">
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-lg">Furniture Item</CardTitle>
+          <CardTitle className="text-lg">Item de Móvel</CardTitle>
           {canRemove && (
             <Button
               variant="ghost"
@@ -72,13 +72,13 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
       <CardContent className="space-y-6">
         {/* Furniture Type Selection */}
         <div className="space-y-2">
-          <Label htmlFor={`furniture-type-${furniture.id}`}>Type of Furniture</Label>
+          <Label htmlFor={`furniture-type-${furniture.id}`}>Tipo de Móvel</Label>
           <Select
             value={furniture.type}
             onValueChange={(value) => updateFurniture('type', value)}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select furniture type" />
+              <SelectValue placeholder="Selecione o tipo de móvel" />
             </SelectTrigger>
             <SelectContent className="bg-white z-50">
               {furnitureOptions.map((option) => (
@@ -95,37 +95,37 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
           <div className="space-y-6 animate-in slide-in-from-top-2 duration-300">
             {/* Dimensions */}
             <div className="space-y-4">
-              <Label className="text-base font-medium">Custom Dimensions (meters)</Label>
+              <Label className="text-base font-medium">Dimensões Personalizadas (centímetros)</Label>
               <div className="grid grid-cols-3 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor={`width-${furniture.id}`}>Width</Label>
+                  <Label htmlFor={`width-${furniture.id}`}>Largura (cm)</Label>
                   <Input
                     id={`width-${furniture.id}`}
                     type="number"
-                    step="0.01"
-                    placeholder="0.00"
+                    step="1"
+                    placeholder="0"
                     value={furniture.dimensions.width}
                     onChange={(e) => updateDimension('width', e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor={`height-${furniture.id}`}>Height</Label>
+                  <Label htmlFor={`height-${furniture.id}`}>Altura (cm)</Label>
                   <Input
                     id={`height-${furniture.id}`}
                     type="number"
-                    step="0.01"
-                    placeholder="0.00"
+                    step="1"
+                    placeholder="0"
                     value={furniture.dimensions.height}
                     onChange={(e) => updateDimension('height', e.target.value)}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor={`depth-${furniture.id}`}>Depth</Label>
+                  <Label htmlFor={`depth-${furniture.id}`}>Profundidade (cm)</Label>
                   <Input
                     id={`depth-${furniture.id}`}
                     type="number"
-                    step="0.01"
-                    placeholder="0.00"
+                    step="1"
+                    placeholder="0"
                     value={furniture.dimensions.depth}
                     onChange={(e) => updateDimension('depth', e.target.value)}
                   />
@@ -137,13 +137,13 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Number of Doors */}
               <div className="space-y-2">
-                <Label>Number of Doors</Label>
+                <Label>Número de Portas</Label>
                 <Select
                   value={furniture.doors || ''}
                   onValueChange={(value) => updateFurniture('doors', value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select doors" />
+                    <SelectValue placeholder="Selecione as portas" />
                   </SelectTrigger>
                   <SelectContent className="bg-white z-50">
                     {DOOR_OPTIONS.map((option) => (
@@ -157,13 +157,13 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
 
               {/* Number of Drawers */}
               <div className="space-y-2">
-                <Label>Number of Drawers</Label>
+                <Label>Número de Gavetas</Label>
                 <Select
                   value={furniture.drawers || ''}
                   onValueChange={(value) => updateFurniture('drawers', value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select drawers" />
+                    <SelectValue placeholder="Selecione as gavetas" />
                   </SelectTrigger>
                   <SelectContent className="bg-white z-50">
                     {DRAWER_OPTIONS.map((option) => (
@@ -177,13 +177,13 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
 
               {/* Internal Color */}
               <div className="space-y-2">
-                <Label>Internal Color</Label>
+                <Label>Cor Interna</Label>
                 <Select
                   value={furniture.internalColor || ''}
                   onValueChange={(value) => updateFurniture('internalColor', value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select internal color" />
+                    <SelectValue placeholder="Selecione a cor interna" />
                   </SelectTrigger>
                   <SelectContent className="bg-white z-50">
                     {COLOR_OPTIONS.map((option) => (
@@ -197,13 +197,13 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
 
               {/* External Color */}
               <div className="space-y-2">
-                <Label>External Color</Label>
+                <Label>Cor Externa</Label>
                 <Select
                   value={furniture.externalColor || ''}
                   onValueChange={(value) => updateFurniture('externalColor', value)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select external color" />
+                    <SelectValue placeholder="Selecione a cor externa" />
                   </SelectTrigger>
                   <SelectContent className="bg-white z-50">
                     {COLOR_OPTIONS.map((option) => (
@@ -218,7 +218,7 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
 
             {/* Accessories */}
             <div className="space-y-3">
-              <Label className="text-base font-medium">Accessories</Label>
+              <Label className="text-base font-medium">Acessórios</Label>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {ACCESSORY_OPTIONS.map((accessory) => (
                   <div key={accessory.value} className="flex items-center space-x-2">

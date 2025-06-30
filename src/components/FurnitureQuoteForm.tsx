@@ -61,13 +61,13 @@ const FurnitureQuoteForm: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    console.log('=== FURNITURE QUOTE REQUEST ===');
+    console.log('=== SOLICITAÇÃO DE ORÇAMENTO DE MÓVEIS ===');
     console.log(JSON.stringify(formData, null, 2));
-    console.log('=== END QUOTE REQUEST ===');
+    console.log('=== FIM DA SOLICITAÇÃO ===');
     
     toast({
-      title: "Quote Request Submitted!",
-      description: "Your furniture quote request has been logged to the console.",
+      title: "Solicitação de Orçamento Enviada!",
+      description: "Sua solicitação de orçamento foi registrada no console.",
     });
   };
 
@@ -86,8 +86,8 @@ const FurnitureQuoteForm: React.FC = () => {
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       <Card className="border-2 border-blue-200">
         <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-t-lg">
-          <CardTitle className="text-2xl text-center">Custom Furniture Quote Request</CardTitle>
-          <p className="text-blue-100 text-center">Design your perfect furniture with our easy-to-use form</p>
+          <CardTitle className="text-2xl text-center">Solicitação de Orçamento de Móveis Personalizados</CardTitle>
+          <p className="text-blue-100 text-center">Projete seus móveis perfeitos com nosso formulário fácil de usar</p>
         </CardHeader>
       </Card>
 
@@ -111,7 +111,7 @@ const FurnitureQuoteForm: React.FC = () => {
           className="w-full sm:w-auto border-2 border-blue-500 text-blue-600 hover:bg-blue-50"
         >
           <Plus className="h-5 w-5 mr-2" />
-          Add Another Environment
+          Adicionar Outro Ambiente
         </Button>
 
         <Button
@@ -121,13 +121,13 @@ const FurnitureQuoteForm: React.FC = () => {
           className="w-full sm:w-auto bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold py-3 px-8"
         >
           <Send className="h-5 w-5 mr-2" />
-          Request My Quote
+          Solicitar Orçamento
         </Button>
       </div>
 
       {!isFormValid() && (
         <p className="text-sm text-gray-500 text-center">
-          Please fill in at least one environment with furniture type and dimensions to submit your quote.
+          Por favor, preencha pelo menos um ambiente com tipo de móvel e dimensões para enviar sua solicitação.
         </p>
       )}
     </div>

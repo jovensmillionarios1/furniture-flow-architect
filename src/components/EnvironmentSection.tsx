@@ -73,7 +73,7 @@ const EnvironmentSection: React.FC<EnvironmentSectionProps> = ({
     <Card className="w-full animate-in slide-in-from-left-4 duration-500">
       <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-lg">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-xl text-gray-800">Environment</CardTitle>
+          <CardTitle className="text-xl text-gray-800">Ambiente</CardTitle>
           {canRemove && (
             <Button
               variant="ghost"
@@ -89,13 +89,13 @@ const EnvironmentSection: React.FC<EnvironmentSectionProps> = ({
       <CardContent className="p-6 space-y-6">
         {/* Environment Type Selection */}
         <div className="space-y-2">
-          <Label htmlFor={`environment-${environment.id}`}>Select Environment</Label>
+          <Label htmlFor={`environment-${environment.id}`}>Selecionar Ambiente</Label>
           <Select
             value={environment.type}
             onValueChange={updateEnvironmentType}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Choose an environment" />
+              <SelectValue placeholder="Escolha um ambiente" />
             </SelectTrigger>
             <SelectContent className="bg-white z-50">
               {ENVIRONMENT_OPTIONS.map((option) => (
@@ -111,14 +111,14 @@ const EnvironmentSection: React.FC<EnvironmentSectionProps> = ({
         {environment.type && (
           <div className="space-y-4 animate-in slide-in-from-top-4 duration-300">
             <div className="flex items-center justify-between">
-              <Label className="text-lg font-medium">Furniture Items</Label>
+              <Label className="text-lg font-medium">Itens de Móveis</Label>
               <Button
                 onClick={addFurnitureItem}
                 size="sm"
                 className="bg-green-600 hover:bg-green-700 text-white"
               >
                 <Plus className="h-4 w-4 mr-1" />
-                Add Furniture
+                Adicionar Móvel
               </Button>
             </div>
 

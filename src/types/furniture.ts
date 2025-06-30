@@ -25,79 +25,79 @@ export interface QuoteForm {
 }
 
 export const ENVIRONMENT_OPTIONS = [
-  { value: 'kitchen', label: 'Kitchen' },
-  { value: 'bathroom', label: 'Bathroom' },
+  { value: 'kitchen', label: 'Cozinha' },
+  { value: 'bathroom', label: 'Banheiro' },
   { value: 'closet', label: 'Closet' },
-  { value: 'living-room', label: 'Living Room' },
-  { value: 'bedroom', label: 'Bedroom' },
-  { value: 'office', label: 'Office' },
+  { value: 'living-room', label: 'Sala de Estar' },
+  { value: 'bedroom', label: 'Quarto' },
+  { value: 'office', label: 'Escritório' },
 ];
 
 export const FURNITURE_TYPES = {
   kitchen: [
-    { value: 'lower-cabinet', label: 'Lower Cabinet' },
-    { value: 'wall-cabinet', label: 'Wall Cabinet' },
-    { value: 'pantry', label: 'Pantry' },
-    { value: 'island', label: 'Kitchen Island' },
+    { value: 'lower-cabinet', label: 'Armário Inferior' },
+    { value: 'wall-cabinet', label: 'Armário de Parede' },
+    { value: 'pantry', label: 'Despensa' },
+    { value: 'island', label: 'Ilha de Cozinha' },
   ],
   bathroom: [
-    { value: 'vanity', label: 'Vanity' },
-    { value: 'medicine-cabinet', label: 'Medicine Cabinet' },
-    { value: 'linen-cabinet', label: 'Linen Cabinet' },
+    { value: 'vanity', label: 'Gabinete de Banheiro' },
+    { value: 'medicine-cabinet', label: 'Armário de Remédios' },
+    { value: 'linen-cabinet', label: 'Armário de Roupas de Banho' },
   ],
   closet: [
-    { value: 'wardrobe', label: 'Wardrobe' },
-    { value: 'dresser', label: 'Dresser' },
-    { value: 'shoe-cabinet', label: 'Shoe Cabinet' },
+    { value: 'wardrobe', label: 'Guarda-roupa' },
+    { value: 'dresser', label: 'Cômoda' },
+    { value: 'shoe-cabinet', label: 'Sapateira' },
   ],
   'living-room': [
-    { value: 'tv-unit', label: 'TV Unit' },
-    { value: 'bookshelf', label: 'Bookshelf' },
-    { value: 'sideboard', label: 'Sideboard' },
+    { value: 'tv-unit', label: 'Rack para TV' },
+    { value: 'bookshelf', label: 'Estante' },
+    { value: 'sideboard', label: 'Aparador' },
   ],
   bedroom: [
-    { value: 'nightstand', label: 'Nightstand' },
-    { value: 'wardrobe', label: 'Wardrobe' },
-    { value: 'dresser', label: 'Dresser' },
+    { value: 'nightstand', label: 'Criado-mudo' },
+    { value: 'wardrobe', label: 'Guarda-roupa' },
+    { value: 'dresser', label: 'Cômoda' },
   ],
   office: [
-    { value: 'desk', label: 'Desk' },
-    { value: 'bookshelf', label: 'Bookshelf' },
-    { value: 'filing-cabinet', label: 'Filing Cabinet' },
+    { value: 'desk', label: 'Mesa' },
+    { value: 'bookshelf', label: 'Estante' },
+    { value: 'filing-cabinet', label: 'Arquivo' },
   ],
 };
 
 export const DOOR_OPTIONS = [
-  { value: '0', label: 'No doors' },
-  { value: '1', label: '1 door' },
-  { value: '2', label: '2 doors' },
-  { value: '3', label: '3 doors' },
-  { value: '4', label: '4 doors' },
+  { value: '0', label: 'Sem portas' },
+  { value: '1', label: '1 porta' },
+  { value: '2', label: '2 portas' },
+  { value: '3', label: '3 portas' },
+  { value: '4', label: '4 portas' },
 ];
 
 export const DRAWER_OPTIONS = [
-  { value: '0', label: 'No drawers' },
-  { value: '1', label: '1 drawer' },
-  { value: '2', label: '2 drawers' },
-  { value: '3', label: '3 drawers' },
-  { value: '4', label: '4 drawers' },
-  { value: '5', label: '5+ drawers' },
+  { value: '0', label: 'Sem gavetas' },
+  { value: '1', label: '1 gaveta' },
+  { value: '2', label: '2 gavetas' },
+  { value: '3', label: '3 gavetas' },
+  { value: '4', label: '4 gavetas' },
+  { value: '5', label: '5+ gavetas' },
 ];
 
 export const COLOR_OPTIONS = [
-  { value: 'white', label: 'White' },
-  { value: 'black', label: 'Black' },
-  { value: 'wood-natural', label: 'Natural Wood' },
-  { value: 'wood-dark', label: 'Dark Wood' },
-  { value: 'gray', label: 'Gray' },
-  { value: 'custom', label: 'Custom Color' },
+  { value: 'white', label: 'Branco' },
+  { value: 'black', label: 'Preto' },
+  { value: 'wood-natural', label: 'Madeira Natural' },
+  { value: 'wood-dark', label: 'Madeira Escura' },
+  { value: 'gray', label: 'Cinza' },
+  { value: 'custom', label: 'Cor Personalizada' },
 ];
 
 export const ACCESSORY_OPTIONS = [
-  { value: 'soft-close-hinges', label: 'Soft Close Hinges' },
-  { value: 'telescopic-slides', label: 'Telescopic Slides' },
-  { value: 'aluminum-toe-kicks', label: 'Aluminum Toe Kicks' },
-  { value: 'led-lighting', label: 'LED Lighting' },
-  { value: 'pull-out-shelves', label: 'Pull-out Shelves' },
-  { value: 'glass-doors', label: 'Glass Doors' },
+  { value: 'soft-close-hinges', label: 'Dobradiças com Amortecimento' },
+  { value: 'telescopic-slides', label: 'Corrediças Telescópicas' },
+  { value: 'aluminum-toe-kicks', label: 'Rodapés de Alumínio' },
+  { value: 'led-lighting', label: 'Iluminação LED' },
+  { value: 'pull-out-shelves', label: 'Prateleiras Deslizantes' },
+  { value: 'glass-doors', label: 'Portas de Vidro' },
 ];
