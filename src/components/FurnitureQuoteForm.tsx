@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, Send } from 'lucide-react';
-import { QuoteForm, Environment, FurnitureItem } from '@/types/furniture';
+import { QuoteForm, Environment, FurnitureItem, quoteFormSchema } from '@/types/furniture';
 import EnvironmentSection from './EnvironmentSection';
 import { useToast } from '@/hooks/use-toast';
 
@@ -12,6 +12,7 @@ const FurnitureQuoteForm: React.FC = () => {
   const [formData, setFormData] = useState<QuoteForm>({
     environments: [createNewEnvironment()],
   });
+  const [validationErrors, setValidationErrors] = useState<Record<string, any>>({});
 
   function createNewEnvironment(): Environment {
     const newFurnitureItem: FurnitureItem = {
@@ -21,12 +22,14 @@ const FurnitureQuoteForm: React.FC = () => {
         width: '',
         height: '',
         depth: '',
+        unit: 'cm',
       },
       doors: '',
       drawers: '',
-      internalColor: '',
-      externalColor: '',
+      structureMaterial: '',
+      doorColor: '',
       accessories: [],
+      observations: '',
     };
 
     return {
@@ -50,6 +53,11 @@ const FurnitureQuoteForm: React.FC = () => {
       ...formData,
       environments: updatedEnvironments,
     });
+    
+    // Clear validation errors for this environment
+    const newErrors = { ...validationErrors };
+    delete newErrors[`environments.${index}`];
+    setValidationErrors(newErrors);
   };
 
   const removeEnvironment = (index: number) => {
@@ -61,14 +69,35 @@ const FurnitureQuoteForm: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    console.log('=== SOLICITAÇÃO DE ORÇAMENTO DE MÓVEIS ===');
-    console.log(JSON.stringify(formData, null, 2));
-    console.log('=== FIM DA SOLICITAÇÃO ===');
-    
-    toast({
-      title: "Solicitação de Orçamento Enviada!",
-      description: "Sua solicitação de orçamento foi registrada no console.",
-    });
+    try {
+      // Validate form data
+      const validatedData = quoteFormSchema.parse(formData);
+      
+      console.log('=== SOLICITAÇÃO DE ORÇAMENTO DE MÓVEIS ===');
+      console.log(JSON.stringify(validatedData, null, 2));
+      console.log('=== FIM DA SOLICITAÇÃO ===');
+      
+      setValidationErrors({});
+      toast({
+        title: "Solicitação de Orçamento Enviada!",
+        description: "Sua solicitação de orçamento foi registrada no console.",
+      });
+    } catch (error: any) {
+      if (error.name === 'ZodError') {
+        const errors: Record<string, any> = {};
+        error.errors.forEach((err: any) => {
+          const path = err.path.join('.');
+          errors[path] = err.message;
+        });
+        setValidationErrors(errors);
+        
+        toast({
+          title: "Erro na Validação",
+          description: "Por favor, verifique os campos obrigatórios e tente novamente.",
+          variant: "destructive",
+        });
+      }
+    }
   };
 
   const isFormValid = () => {
@@ -77,7 +106,11 @@ const FurnitureQuoteForm: React.FC = () => {
         furniture.type && 
         furniture.dimensions.width && 
         furniture.dimensions.height && 
-        furniture.dimensions.depth
+        furniture.dimensions.depth &&
+        furniture.doors &&
+        furniture.drawers &&
+        furniture.structureMaterial &&
+        furniture.doorColor
       )
     );
   };
@@ -99,6 +132,8 @@ const FurnitureQuoteForm: React.FC = () => {
             onUpdate={(updatedEnvironment) => updateEnvironment(index, updatedEnvironment)}
             onRemove={() => removeEnvironment(index)}
             canRemove={formData.environments.length > 1}
+            validationErrors={validationErrors}
+            environmentIndex={index}
           />
         ))}
       </div>
@@ -116,7 +151,6 @@ const FurnitureQuoteForm: React.FC = () => {
 
         <Button
           onClick={handleSubmit}
-          disabled={!isFormValid()}
           size="lg"
           className="w-full sm:w-auto bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold py-3 px-8"
         >
@@ -125,11 +159,10 @@ const FurnitureQuoteForm: React.FC = () => {
         </Button>
       </div>
 
-      {!isFormValid() && (
-        <p className="text-sm text-gray-500 text-center">
-          Por favor, preencha pelo menos um ambiente com tipo de móvel e dimensões para enviar sua solicitação.
-        </p>
-      )}
+      <div className="text-sm text-gray-500 text-center">
+        <p>* Campos obrigatórios</p>
+        <p>Campos marcados com "Outro" requerem especificação adicional</p>
+      </div>
     </div>
   );
 };

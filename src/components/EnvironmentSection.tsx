@@ -13,6 +13,8 @@ interface EnvironmentSectionProps {
   onUpdate: (environment: Environment) => void;
   onRemove: () => void;
   canRemove: boolean;
+  validationErrors?: Record<string, any>;
+  environmentIndex: number;
 }
 
 const EnvironmentSection: React.FC<EnvironmentSectionProps> = ({
@@ -20,6 +22,8 @@ const EnvironmentSection: React.FC<EnvironmentSectionProps> = ({
   onUpdate,
   onRemove,
   canRemove,
+  validationErrors = {},
+  environmentIndex,
 }) => {
   const updateEnvironmentType = (type: string) => {
     onUpdate({
@@ -36,12 +40,14 @@ const EnvironmentSection: React.FC<EnvironmentSectionProps> = ({
       width: '',
       height: '',
       depth: '',
+      unit: 'cm',
     },
     doors: '',
     drawers: '',
-    internalColor: '',
-    externalColor: '',
+    structureMaterial: '',
+    doorColor: '',
     accessories: [],
+    observations: '',
   });
 
   const addFurnitureItem = () => {
@@ -69,6 +75,20 @@ const EnvironmentSection: React.FC<EnvironmentSectionProps> = ({
     });
   };
 
+  const getValidationErrorsForFurniture = (furnitureIndex: number) => {
+    const errors: Record<string, string> = {};
+    const prefix = `environments.${environmentIndex}.furniture.${furnitureIndex}`;
+    
+    Object.keys(validationErrors).forEach(key => {
+      if (key.startsWith(prefix)) {
+        const fieldName = key.replace(`${prefix}.`, '');
+        errors[fieldName] = validationErrors[key];
+      }
+    });
+    
+    return errors;
+  };
+
   return (
     <Card className="w-full animate-in slide-in-from-left-4 duration-500">
       <CardHeader className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-t-lg">
@@ -89,12 +109,12 @@ const EnvironmentSection: React.FC<EnvironmentSectionProps> = ({
       <CardContent className="p-6 space-y-6">
         {/* Environment Type Selection */}
         <div className="space-y-2">
-          <Label htmlFor={`environment-${environment.id}`}>Selecionar Ambiente</Label>
+          <Label htmlFor={`environment-${environment.id}`}>Selecionar Ambiente *</Label>
           <Select
             value={environment.type}
             onValueChange={updateEnvironmentType}
           >
-            <SelectTrigger>
+            <SelectTrigger className={validationErrors[`environments.${environmentIndex}.type`] ? 'border-red-500' : ''}>
               <SelectValue placeholder="Escolha um ambiente" />
             </SelectTrigger>
             <SelectContent className="bg-white z-50">
@@ -105,6 +125,9 @@ const EnvironmentSection: React.FC<EnvironmentSectionProps> = ({
               ))}
             </SelectContent>
           </Select>
+          {validationErrors[`environments.${environmentIndex}.type`] && (
+            <p className="text-sm text-red-500">{validationErrors[`environments.${environmentIndex}.type`]}</p>
+          )}
         </div>
 
         {/* Furniture Items - Only show if environment is selected */}
@@ -131,6 +154,7 @@ const EnvironmentSection: React.FC<EnvironmentSectionProps> = ({
                   onUpdate={(updatedFurniture) => updateFurnitureItem(index, updatedFurniture)}
                   onRemove={() => removeFurnitureItem(index)}
                   canRemove={environment.furniture.length > 1}
+                  validationErrors={getValidationErrorsForFurniture(index)}
                 />
               ))}
             </div>
