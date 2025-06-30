@@ -74,6 +74,7 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
   };
 
   const handleTypeChange = (value: string) => {
+    console.log('Furniture type selected:', value);
     updateFurniture('type', value);
     if (value === 'other') {
       setShowCustomType(true);
@@ -84,6 +85,7 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
   };
 
   const handleDoorsChange = (value: string) => {
+    console.log('Doors selected:', value);
     updateFurniture('doors', value);
     if (value === 'other') {
       setShowCustomDoors(true);
@@ -94,6 +96,7 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
   };
 
   const handleDrawersChange = (value: string) => {
+    console.log('Drawers selected:', value);
     updateFurniture('drawers', value);
     if (value === 'other') {
       setShowCustomDrawers(true);
@@ -104,6 +107,7 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
   };
 
   const handleStructureChange = (value: string) => {
+    console.log('Structure material selected:', value);
     updateFurniture('structureMaterial', value);
     if (value === 'other') {
       setShowCustomStructure(true);
@@ -114,6 +118,7 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
   };
 
   const handleDoorColorChange = (value: string) => {
+    console.log('Door color selected:', value);
     updateFurniture('doorColor', value);
     if (value === 'other') {
       setShowCustomDoorColor(true);
@@ -147,7 +152,7 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
         <div className="space-y-2">
           <Label htmlFor={`furniture-type-${furniture.id}`}>Tipo de Móvel *</Label>
           <Select
-            value={furniture.type}
+            value={furniture.type || ""}
             onValueChange={handleTypeChange}
           >
             <SelectTrigger className={validationErrors.type ? 'border-red-500' : ''}>

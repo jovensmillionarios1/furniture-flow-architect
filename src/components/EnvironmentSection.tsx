@@ -29,10 +29,12 @@ const EnvironmentSection: React.FC<EnvironmentSectionProps> = ({
   const [showCustomEnvironment, setShowCustomEnvironment] = useState(environment.type === 'other');
 
   const updateEnvironmentType = (type: string) => {
+    console.log('Environment type selected:', type);
+    
     const updatedEnvironment = {
       ...environment,
       type,
-      furniture: [createNewFurnitureItem()], // Reset furniture when environment changes
+      furniture: environment.furniture.length > 0 ? environment.furniture : [createNewFurnitureItem()],
     };
 
     // Handle "Other" logic
@@ -133,7 +135,7 @@ const EnvironmentSection: React.FC<EnvironmentSectionProps> = ({
         <div className="space-y-2">
           <Label htmlFor={`environment-${environment.id}`}>Selecionar Ambiente *</Label>
           <Select
-            value={environment.type}
+            value={environment.type || ""}
             onValueChange={updateEnvironmentType}
           >
             <SelectTrigger className={validationErrors[`environments.${environmentIndex}.type`] ? 'border-red-500' : ''}>
