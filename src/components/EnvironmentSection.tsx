@@ -1,9 +1,10 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 import { Plus, Trash2 } from 'lucide-react';
 import { Environment, FurnitureItem as FurnitureItemType, ENVIRONMENT_OPTIONS } from '@/types/furniture';
 import FurnitureItem from './FurnitureItem';
@@ -25,11 +26,30 @@ const EnvironmentSection: React.FC<EnvironmentSectionProps> = ({
   validationErrors = {},
   environmentIndex,
 }) => {
+  const [showCustomEnvironment, setShowCustomEnvironment] = useState(environment.type === 'other');
+
   const updateEnvironmentType = (type: string) => {
-    onUpdate({
+    const updatedEnvironment = {
       ...environment,
       type,
       furniture: [createNewFurnitureItem()], // Reset furniture when environment changes
+    };
+
+    // Handle "Other" logic
+    if (type === 'other') {
+      setShowCustomEnvironment(true);
+    } else {
+      setShowCustomEnvironment(false);
+      updatedEnvironment.customType = '';
+    }
+
+    onUpdate(updatedEnvironment);
+  };
+
+  const updateCustomEnvironmentType = (customType: string) => {
+    onUpdate({
+      ...environment,
+      customType,
     });
   };
 
@@ -38,9 +58,11 @@ const EnvironmentSection: React.FC<EnvironmentSectionProps> = ({
     type: '',
     dimensions: {
       width: '',
+      widthUnit: 'cm',
       height: '',
+      heightUnit: 'cm',
       depth: '',
-      unit: 'cm',
+      depthUnit: 'cm',
     },
     doors: '',
     drawers: '',
@@ -127,6 +149,19 @@ const EnvironmentSection: React.FC<EnvironmentSectionProps> = ({
           </Select>
           {validationErrors[`environments.${environmentIndex}.type`] && (
             <p className="text-sm text-red-500">{validationErrors[`environments.${environmentIndex}.type`]}</p>
+          )}
+          {showCustomEnvironment && (
+            <div className="mt-2">
+              <Input
+                placeholder="Especifique o tipo de ambiente"
+                value={environment.customType || ''}
+                onChange={(e) => updateCustomEnvironmentType(e.target.value)}
+                className={validationErrors[`environments.${environmentIndex}.customType`] ? 'border-red-500' : ''}
+              />
+              {validationErrors[`environments.${environmentIndex}.customType`] && (
+                <p className="text-sm text-red-500">{validationErrors[`environments.${environmentIndex}.customType`]}</p>
+              )}
+            </div>
           )}
         </div>
 

@@ -4,11 +4,14 @@ import { z } from 'zod';
 export interface FurnitureItem {
   id: string;
   type: string;
+  customType?: string;
   dimensions: {
     width: string;
+    widthUnit: 'cm' | 'm';
     height: string;
+    heightUnit: 'cm' | 'm';
     depth: string;
-    unit: 'cm' | 'm';
+    depthUnit: 'cm' | 'm';
   };
   doors?: string;
   customDoors?: string;
@@ -26,6 +29,7 @@ export interface FurnitureItem {
 export interface Environment {
   id: string;
   type: string;
+  customType?: string;
   furniture: FurnitureItem[];
 }
 
@@ -40,6 +44,7 @@ export const ENVIRONMENT_OPTIONS = [
   { value: 'living-room', label: 'Sala de Estar' },
   { value: 'bedroom', label: 'Quarto' },
   { value: 'office', label: 'Escritório' },
+  { value: 'other', label: 'Outro' },
 ];
 
 export const FURNITURE_TYPES = {
@@ -48,31 +53,40 @@ export const FURNITURE_TYPES = {
     { value: 'wall-cabinet', label: 'Armário de Parede' },
     { value: 'pantry', label: 'Despensa' },
     { value: 'island', label: 'Ilha de Cozinha' },
+    { value: 'other', label: 'Outro' },
   ],
   bathroom: [
     { value: 'vanity', label: 'Gabinete de Banheiro' },
     { value: 'medicine-cabinet', label: 'Armário de Remédios' },
     { value: 'linen-cabinet', label: 'Armário de Roupas de Banho' },
+    { value: 'other', label: 'Outro' },
   ],
   closet: [
     { value: 'wardrobe', label: 'Guarda-roupa' },
     { value: 'dresser', label: 'Cômoda' },
     { value: 'shoe-cabinet', label: 'Sapateira' },
+    { value: 'other', label: 'Outro' },
   ],
   'living-room': [
     { value: 'tv-unit', label: 'Rack para TV' },
     { value: 'bookshelf', label: 'Estante' },
     { value: 'sideboard', label: 'Aparador' },
+    { value: 'other', label: 'Outro' },
   ],
   bedroom: [
     { value: 'nightstand', label: 'Criado-mudo' },
     { value: 'wardrobe', label: 'Guarda-roupa' },
     { value: 'dresser', label: 'Cômoda' },
+    { value: 'other', label: 'Outro' },
   ],
   office: [
     { value: 'desk', label: 'Mesa' },
     { value: 'bookshelf', label: 'Estante' },
     { value: 'filing-cabinet', label: 'Arquivo' },
+    { value: 'other', label: 'Outro' },
+  ],
+  other: [
+    { value: 'other', label: 'Outro' },
   ],
 };
 
@@ -133,11 +147,14 @@ export const ACCESSORY_OPTIONS = [
 export const furnitureItemSchema = z.object({
   id: z.string(),
   type: z.string().min(1, 'Tipo de móvel é obrigatório'),
+  customType: z.string().optional(),
   dimensions: z.object({
     width: z.string().min(1, 'Largura é obrigatória').refine(val => !isNaN(Number(val)) && Number(val) > 0, 'Largura deve ser um número positivo'),
+    widthUnit: z.enum(['cm', 'm']),
     height: z.string().min(1, 'Altura é obrigatória').refine(val => !isNaN(Number(val)) && Number(val) > 0, 'Altura deve ser um número positivo'),
+    heightUnit: z.enum(['cm', 'm']),
     depth: z.string().min(1, 'Profundidade é obrigatória').refine(val => !isNaN(Number(val)) && Number(val) > 0, 'Profundidade deve ser um número positivo'),
-    unit: z.enum(['cm', 'm']),
+    depthUnit: z.enum(['cm', 'm']),
   }),
   doors: z.string().min(1, 'Número de portas é obrigatório'),
   customDoors: z.string().optional(),
@@ -152,6 +169,9 @@ export const furnitureItemSchema = z.object({
   observations: z.string().optional(),
 }).refine((data) => {
   // If "other" is selected, custom field becomes required
+  if (data.type === 'other' && (!data.customType || data.customType.trim() === '')) {
+    return false;
+  }
   if (data.doors === 'other' && (!data.customDoors || data.customDoors.trim() === '')) {
     return false;
   }
@@ -175,7 +195,15 @@ export const furnitureItemSchema = z.object({
 export const environmentSchema = z.object({
   id: z.string(),
   type: z.string().min(1, 'Tipo de ambiente é obrigatório'),
+  customType: z.string().optional(),
   furniture: z.array(furnitureItemSchema).min(1, 'Pelo menos um móvel é obrigatório'),
+}).refine((data) => {
+  if (data.type === 'other' && (!data.customType || data.customType.trim() === '')) {
+    return false;
+  }
+  return true;
+}, {
+  message: 'Campo personalizado é obrigatório quando "Outro" é selecionado',
 });
 
 export const quoteFormSchema = z.object({

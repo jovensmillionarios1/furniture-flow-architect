@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -20,9 +19,11 @@ const FurnitureQuoteForm: React.FC = () => {
       type: '',
       dimensions: {
         width: '',
+        widthUnit: 'cm',
         height: '',
+        heightUnit: 'cm',
         depth: '',
-        unit: 'cm',
+        depthUnit: 'cm',
       },
       doors: '',
       drawers: '',

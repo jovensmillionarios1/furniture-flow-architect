@@ -36,6 +36,7 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
   canRemove,
   validationErrors = {},
 }) => {
+  const [showCustomType, setShowCustomType] = useState(furniture.type === 'other');
   const [showCustomDoors, setShowCustomDoors] = useState(furniture.doors === 'other');
   const [showCustomDrawers, setShowCustomDrawers] = useState(furniture.drawers === 'other');
   const [showCustomStructure, setShowCustomStructure] = useState(furniture.structureMaterial === 'other');
@@ -59,16 +60,6 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
     });
   };
 
-  const updateDimensionUnit = (unit: 'cm' | 'm') => {
-    onUpdate({
-      ...furniture,
-      dimensions: {
-        ...furniture.dimensions,
-        unit,
-      },
-    });
-  };
-
   const toggleAccessory = (accessory: string) => {
     const accessories = furniture.accessories || [];
     const updatedAccessories = accessories.includes(accessory)
@@ -82,34 +73,52 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
     }
   };
 
+  const handleTypeChange = (value: string) => {
+    updateFurniture('type', value);
+    if (value === 'other') {
+      setShowCustomType(true);
+    } else {
+      setShowCustomType(false);
+      updateFurniture('customType', '');
+    }
+  };
+
   const handleDoorsChange = (value: string) => {
     updateFurniture('doors', value);
-    setShowCustomDoors(value === 'other');
-    if (value !== 'other') {
+    if (value === 'other') {
+      setShowCustomDoors(true);
+    } else {
+      setShowCustomDoors(false);
       updateFurniture('customDoors', '');
     }
   };
 
   const handleDrawersChange = (value: string) => {
     updateFurniture('drawers', value);
-    setShowCustomDrawers(value === 'other');
-    if (value !== 'other') {
+    if (value === 'other') {
+      setShowCustomDrawers(true);
+    } else {
+      setShowCustomDrawers(false);
       updateFurniture('customDrawers', '');
     }
   };
 
   const handleStructureChange = (value: string) => {
     updateFurniture('structureMaterial', value);
-    setShowCustomStructure(value === 'other');
-    if (value !== 'other') {
+    if (value === 'other') {
+      setShowCustomStructure(true);
+    } else {
+      setShowCustomStructure(false);
       updateFurniture('customStructureMaterial', '');
     }
   };
 
   const handleDoorColorChange = (value: string) => {
     updateFurniture('doorColor', value);
-    setShowCustomDoorColor(value === 'other');
-    if (value !== 'other') {
+    if (value === 'other') {
+      setShowCustomDoorColor(true);
+    } else {
+      setShowCustomDoorColor(false);
       updateFurniture('customDoorColor', '');
     }
   };
@@ -139,7 +148,7 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
           <Label htmlFor={`furniture-type-${furniture.id}`}>Tipo de Móvel *</Label>
           <Select
             value={furniture.type}
-            onValueChange={(value) => updateFurniture('type', value)}
+            onValueChange={handleTypeChange}
           >
             <SelectTrigger className={validationErrors.type ? 'border-red-500' : ''}>
               <SelectValue placeholder="Selecione o tipo de móvel" />
@@ -155,79 +164,137 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
           {validationErrors.type && (
             <p className="text-sm text-red-500">{validationErrors.type}</p>
           )}
+          {showCustomType && (
+            <div className="mt-2">
+              <Input
+                placeholder="Especifique o tipo de móvel"
+                value={furniture.customType || ''}
+                onChange={(e) => updateFurniture('customType', e.target.value)}
+                className={validationErrors.customType ? 'border-red-500' : ''}
+              />
+              {validationErrors.customType && (
+                <p className="text-sm text-red-500">{validationErrors.customType}</p>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Dynamic Fields - Only show if furniture type is selected */}
         {furniture.type && (
           <div className="space-y-6 animate-in slide-in-from-top-2 duration-300">
-            {/* Unit Selection */}
-            <div className="space-y-2">
-              <Label>Unidade de Medida *</Label>
-              <Select
-                value={furniture.dimensions.unit}
-                onValueChange={updateDimensionUnit}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Selecione a unidade" />
-                </SelectTrigger>
-                <SelectContent className="bg-white z-50">
-                  {UNIT_OPTIONS.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
             {/* Dimensions */}
             <div className="space-y-4">
               <Label className="text-base font-medium">Dimensões Personalizadas *</Label>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor={`width-${furniture.id}`}>Largura ({furniture.dimensions.unit}) *</Label>
-                  <Input
-                    id={`width-${furniture.id}`}
-                    type="number"
-                    step="0.1"
-                    placeholder="0"
-                    value={furniture.dimensions.width}
-                    onChange={(e) => updateDimension('width', e.target.value)}
-                    className={validationErrors['dimensions.width'] ? 'border-red-500' : ''}
-                  />
-                  {validationErrors['dimensions.width'] && (
-                    <p className="text-sm text-red-500">{validationErrors['dimensions.width']}</p>
-                  )}
+              <div className="grid grid-cols-1 gap-4">
+                {/* Width */}
+                <div className="flex gap-2 items-end">
+                  <div className="flex-1 space-y-2">
+                    <Label htmlFor={`width-${furniture.id}`}>Largura *</Label>
+                    <Input
+                      id={`width-${furniture.id}`}
+                      type="number"
+                      step="0.1"
+                      placeholder="0"
+                      value={furniture.dimensions.width}
+                      onChange={(e) => updateDimension('width', e.target.value)}
+                      className={validationErrors['dimensions.width'] ? 'border-red-500' : ''}
+                    />
+                    {validationErrors['dimensions.width'] && (
+                      <p className="text-sm text-red-500">{validationErrors['dimensions.width']}</p>
+                    )}
+                  </div>
+                  <div className="w-20 space-y-2">
+                    <Label>Unidade</Label>
+                    <Select
+                      value={furniture.dimensions.widthUnit}
+                      onValueChange={(value: 'cm' | 'm') => updateDimension('widthUnit', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white z-50">
+                        {UNIT_OPTIONS.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor={`height-${furniture.id}`}>Altura ({furniture.dimensions.unit}) *</Label>
-                  <Input
-                    id={`height-${furniture.id}`}
-                    type="number"
-                    step="0.1"
-                    placeholder="0"
-                    value={furniture.dimensions.height}
-                    onChange={(e) => updateDimension('height', e.target.value)}
-                    className={validationErrors['dimensions.height'] ? 'border-red-500' : ''}
-                  />
-                  {validationErrors['dimensions.height'] && (
-                    <p className="text-sm text-red-500">{validationErrors['dimensions.height']}</p>
-                  )}
+
+                {/* Height */}
+                <div className="flex gap-2 items-end">
+                  <div className="flex-1 space-y-2">
+                    <Label htmlFor={`height-${furniture.id}`}>Altura *</Label>
+                    <Input
+                      id={`height-${furniture.id}`}
+                      type="number"
+                      step="0.1"
+                      placeholder="0"
+                      value={furniture.dimensions.height}
+                      onChange={(e) => updateDimension('height', e.target.value)}
+                      className={validationErrors['dimensions.height'] ? 'border-red-500' : ''}
+                    />
+                    {validationErrors['dimensions.height'] && (
+                      <p className="text-sm text-red-500">{validationErrors['dimensions.height']}</p>
+                    )}
+                  </div>
+                  <div className="w-20 space-y-2">
+                    <Label>Unidade</Label>
+                    <Select
+                      value={furniture.dimensions.heightUnit}
+                      onValueChange={(value: 'cm' | 'm') => updateDimension('heightUnit', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white z-50">
+                        {UNIT_OPTIONS.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor={`depth-${furniture.id}`}>Profundidade ({furniture.dimensions.unit}) *</Label>
-                  <Input
-                    id={`depth-${furniture.id}`}
-                    type="number"
-                    step="0.1"
-                    placeholder="0"
-                    value={furniture.dimensions.depth}
-                    onChange={(e) => updateDimension('depth', e.target.value)}
-                    className={validationErrors['dimensions.depth'] ? 'border-red-500' : ''}
-                  />
-                  {validationErrors['dimensions.depth'] && (
-                    <p className="text-sm text-red-500">{validationErrors['dimensions.depth']}</p>
-                  )}
+
+                {/* Depth */}
+                <div className="flex gap-2 items-end">
+                  <div className="flex-1 space-y-2">
+                    <Label htmlFor={`depth-${furniture.id}`}>Profundidade *</Label>
+                    <Input
+                      id={`depth-${furniture.id}`}
+                      type="number"
+                      step="0.1"
+                      placeholder="0"
+                      value={furniture.dimensions.depth}
+                      onChange={(e) => updateDimension('depth', e.target.value)}
+                      className={validationErrors['dimensions.depth'] ? 'border-red-500' : ''}
+                    />
+                    {validationErrors['dimensions.depth'] && (
+                      <p className="text-sm text-red-500">{validationErrors['dimensions.depth']}</p>
+                    )}
+                  </div>
+                  <div className="w-20 space-y-2">
+                    <Label>Unidade</Label>
+                    <Select
+                      value={furniture.dimensions.depthUnit}
+                      onValueChange={(value: 'cm' | 'm') => updateDimension('depthUnit', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white z-50">
+                        {UNIT_OPTIONS.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </div>
             </div>
