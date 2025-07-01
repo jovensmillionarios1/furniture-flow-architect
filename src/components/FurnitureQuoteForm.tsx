@@ -1,15 +1,34 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, Send } from 'lucide-react';
 import { QuoteForm, Environment, FurnitureItem, quoteFormSchema } from '@/types/furniture';
 import EnvironmentSection from './EnvironmentSection';
+import ContactSection from './ContactSection';
 import { useToast } from '@/hooks/use-toast';
+import { z } from 'zod';
+
+// Extend the quote form schema to include contact info
+const extendedQuoteFormSchema = quoteFormSchema.extend({
+  contactInfo: z.object({
+    name: z.string().min(1, 'Nome é obrigatório'),
+    email: z.string().email('Email inválido').min(1, 'Email é obrigatório'),
+    whatsapp: z.string().min(1, 'WhatsApp é obrigatório'),
+  }),
+});
+
+type ExtendedQuoteForm = z.infer<typeof extendedQuoteFormSchema>;
 
 const FurnitureQuoteForm: React.FC = () => {
   const { toast } = useToast();
-  const [formData, setFormData] = useState<QuoteForm>({
+  const [formData, setFormData] = useState<ExtendedQuoteForm>({
     environments: [createNewEnvironment()],
+    contactInfo: {
+      name: '',
+      email: '',
+      whatsapp: '',
+    },
   });
   const [validationErrors, setValidationErrors] = useState<Record<string, any>>({});
 
@@ -69,12 +88,27 @@ const FurnitureQuoteForm: React.FC = () => {
     });
   };
 
+  const updateContactInfo = (field: string, value: string) => {
+    setFormData({
+      ...formData,
+      contactInfo: {
+        ...formData.contactInfo,
+        [field]: value,
+      },
+    });
+    
+    // Clear validation errors for this field
+    const newErrors = { ...validationErrors };
+    delete newErrors[`contactInfo.${field}`];
+    setValidationErrors(newErrors);
+  };
+
   const handleSubmit = () => {
     try {
       // Validate form data
-      const validatedData = quoteFormSchema.parse(formData);
+      const validatedData = extendedQuoteFormSchema.parse(formData);
       
-      console.log('=== SOLICITAÇÃO DE ORÇAMENTO DE MÓVEIS ===');
+      console.log('=== SOLICITAÇÃO DE ORÇAMENTO DE MÓVEIS - GO.MOB ===');
       console.log(JSON.stringify(validatedData, null, 2));
       console.log('=== FIM DA SOLICITAÇÃO ===');
       
@@ -102,28 +136,38 @@ const FurnitureQuoteForm: React.FC = () => {
   };
 
   const isFormValid = () => {
-    return formData.environments.some(env => 
-      env.type && env.furniture.some(furniture => 
-        furniture.type && 
-        furniture.dimensions.width && 
-        furniture.dimensions.height && 
-        furniture.dimensions.depth &&
-        furniture.doors &&
-        furniture.drawers &&
-        furniture.structureMaterial &&
-        furniture.doorColor
-      )
-    );
+    return formData.contactInfo.name && 
+           formData.contactInfo.email && 
+           formData.contactInfo.whatsapp &&
+           formData.environments.some(env => 
+             env.type && env.furniture.some(furniture => 
+               furniture.type && 
+               furniture.dimensions.width && 
+               furniture.dimensions.height && 
+               furniture.dimensions.depth &&
+               furniture.doors &&
+               furniture.drawers &&
+               furniture.structureMaterial &&
+               furniture.doorColor
+             )
+           );
   };
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
-      <Card className="border-2 border-blue-200">
-        <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-t-lg">
+      <Card className="border-2 border-gomob-secondary">
+        <CardHeader className="bg-gradient-to-r from-gomob-secondary to-gomob-primary text-white rounded-t-lg">
           <CardTitle className="text-2xl text-center">Solicitação de Orçamento de Móveis Personalizados</CardTitle>
-          <p className="text-blue-100 text-center">Projete seus móveis perfeitos com nosso formulário fácil de usar</p>
+          <p className="text-center opacity-90">Projete seus móveis perfeitos com nosso formulário fácil de usar</p>
         </CardHeader>
       </Card>
+
+      {/* Contact Information Section */}
+      <ContactSection
+        contactInfo={formData.contactInfo}
+        onUpdate={updateContactInfo}
+        validationErrors={validationErrors}
+      />
 
       <div className="space-y-6">
         {formData.environments.map((environment, index) => (
@@ -144,7 +188,7 @@ const FurnitureQuoteForm: React.FC = () => {
           onClick={addEnvironment}
           variant="outline"
           size="lg"
-          className="w-full sm:w-auto border-2 border-blue-500 text-blue-600 hover:bg-blue-50"
+          className="w-full sm:w-auto border-2 border-gomob-secondary text-gomob-secondary hover:bg-gomob-secondary hover:text-white"
         >
           <Plus className="h-5 w-5 mr-2" />
           Adicionar Outro Ambiente
@@ -153,14 +197,14 @@ const FurnitureQuoteForm: React.FC = () => {
         <Button
           onClick={handleSubmit}
           size="lg"
-          className="w-full sm:w-auto bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white font-semibold py-3 px-8"
+          className="w-full sm:w-auto bg-gomob-secondary hover:bg-gomob-primary text-white font-semibold py-3 px-8"
         >
           <Send className="h-5 w-5 mr-2" />
           Solicitar Orçamento
         </Button>
       </div>
 
-      <div className="text-sm text-gray-500 text-center">
+      <div className="text-sm text-gomob-black text-center">
         <p>* Campos obrigatórios</p>
         <p>Campos marcados com "Outro" requerem especificação adicional</p>
       </div>

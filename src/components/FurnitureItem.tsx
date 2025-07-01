@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -145,8 +144,8 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
   };
 
   return (
-    <Card className="relative animate-in slide-in-from-top-4 duration-300">
-      <CardHeader className="pb-4">
+    <Card className="relative animate-in slide-in-from-top-4 duration-300 border-2 border-gomob-primary">
+      <CardHeader className="pb-4 bg-gomob-primary text-white">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg">Item de Móvel</CardTitle>
           {canRemove && (
@@ -154,7 +153,7 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
               variant="ghost"
               size="sm"
               onClick={onRemove}
-              className="text-red-500 hover:text-red-700 hover:bg-red-50"
+              className="text-white hover:text-red-200 hover:bg-red-500/20"
             >
               <Trash2 className="h-4 w-4" />
             </Button>
@@ -220,13 +219,14 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
 
             {/* Observations */}
             <div className="space-y-2">
-              <Label htmlFor={`observations-${furniture.id}`}>Observações</Label>
+              <Label htmlFor={`observations-${furniture.id}`} className="text-gomob-black font-semibold">Observações</Label>
               <Textarea
                 id={`observations-${furniture.id}`}
                 placeholder="Comentários opcionais sobre este móvel (ex: incluir rodapé de alumínio, usar iluminação LED, etc.)"
                 value={furniture.observations || ''}
                 onChange={(e) => updateFurniture('observations', e.target.value)}
                 rows={3}
+                className="border-2 border-gomob-primary focus:border-gomob-secondary"
               />
             </div>
           </div>
