@@ -158,7 +158,7 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
             <SelectTrigger className={validationErrors.type ? 'border-red-500' : ''}>
               <SelectValue placeholder="Selecione o tipo de móvel" />
             </SelectTrigger>
-            <SelectContent className="bg-white z-50">
+            <SelectContent className="bg-white z-[100] border shadow-lg">
               {furnitureOptions.map((option) => (
                 <SelectItem key={option.value} value={option.value}>
                   {option.label}
@@ -217,7 +217,7 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-white z-50">
+                      <SelectContent className="bg-white z-[100] border shadow-lg">
                         {UNIT_OPTIONS.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
@@ -254,7 +254,7 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-white z-50">
+                      <SelectContent className="bg-white z-[100] border shadow-lg">
                         {UNIT_OPTIONS.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
@@ -291,7 +291,7 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-white z-50">
+                      <SelectContent className="bg-white z-[100] border shadow-lg">
                         {UNIT_OPTIONS.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
@@ -316,7 +316,7 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
                   <SelectTrigger className={validationErrors.doors ? 'border-red-500' : ''}>
                     <SelectValue placeholder="Selecione as portas" />
                   </SelectTrigger>
-                  <SelectContent className="bg-white z-50">
+                  <SelectContent className="bg-white z-[100] border shadow-lg">
                     {DOOR_OPTIONS.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
@@ -352,7 +352,7 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
                   <SelectTrigger className={validationErrors.drawers ? 'border-red-500' : ''}>
                     <SelectValue placeholder="Selecione as gavetas" />
                   </SelectTrigger>
-                  <SelectContent className="bg-white z-50">
+                  <SelectContent className="bg-white z-[100] border shadow-lg">
                     {DRAWER_OPTIONS.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
@@ -388,7 +388,7 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
                   <SelectTrigger className={validationErrors.structureMaterial ? 'border-red-500' : ''}>
                     <SelectValue placeholder="Selecione o material" />
                   </SelectTrigger>
-                  <SelectContent className="bg-white z-50">
+                  <SelectContent className="bg-white z-[100] border shadow-lg">
                     {STRUCTURE_MATERIAL_OPTIONS.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
@@ -424,7 +424,7 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
                   <SelectTrigger className={validationErrors.doorColor ? 'border-red-500' : ''}>
                     <SelectValue placeholder="Selecione a cor" />
                   </SelectTrigger>
-                  <SelectContent className="bg-white z-50">
+                  <SelectContent className="bg-white z-[100] border shadow-lg">
                     {DOOR_COLOR_OPTIONS.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
                         {option.label}
