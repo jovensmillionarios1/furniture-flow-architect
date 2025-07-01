@@ -69,10 +69,10 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
     const updatedAccessories = accessories.includes(accessory)
       ? accessories.filter(a => a !== accessory)
       : [...accessories, accessory];
-    
+
     console.log('Updated accessories:', updatedAccessories);
     updateFurniture('accessories', updatedAccessories);
-    
+
     if (accessory === 'other') {
       setShowCustomAccessories(updatedAccessories.includes('other'));
     }
@@ -85,7 +85,10 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
       setShowCustomType(true);
     } else {
       setShowCustomType(false);
-      updateFurniture('customType', '');
+
+      if (furniture.customType) {
+        updateFurniture('customType', '');
+      }
     }
   };
 
@@ -96,7 +99,9 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
       setShowCustomDoors(true);
     } else {
       setShowCustomDoors(false);
-      updateFurniture('customDoors', '');
+      if (furniture.customDoors) {
+        updateFurniture('customDoors', '');
+      }
     }
   };
 
@@ -107,7 +112,9 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
       setShowCustomDrawers(true);
     } else {
       setShowCustomDrawers(false);
-      updateFurniture('customDrawers', '');
+      if (furniture.customDrawers) {
+        updateFurniture('customDrawers', '');
+      }
     }
   };
 
@@ -118,7 +125,9 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
       setShowCustomStructure(true);
     } else {
       setShowCustomStructure(false);
-      updateFurniture('customStructureMaterial', '');
+      if (furniture.customStructureMaterial) {
+        updateFurniture('customStructureMaterial', '');
+      }
     }
   };
 
@@ -129,7 +138,9 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
       setShowCustomDoorColor(true);
     } else {
       setShowCustomDoorColor(false);
-      updateFurniture('customDoorColor', '');
+      if (furniture.customDoorColor) {
+        updateFurniture('customDoorColor', '');
+      }
     }
   };
 
@@ -154,7 +165,7 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
         {/* Furniture Type Selection */}
         <FurnitureTypeSelector
           environmentType={environmentType}
-          furnitureType={furniture.type}
+          furnitureType={String(furniture.type ?? '')} // <- garante que sempre é string
           customType={furniture.customType}
           showCustomType={showCustomType}
           onTypeChange={handleTypeChange}
