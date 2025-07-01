@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -28,12 +28,22 @@ const FurnitureItem: React.FC<FurnitureItemProps> = ({
   canRemove,
   validationErrors = {},
 }) => {
-  const [showCustomType, setShowCustomType] = useState(furniture.type === 'other');
-  const [showCustomDoors, setShowCustomDoors] = useState(furniture.doors === 'other');
-  const [showCustomDrawers, setShowCustomDrawers] = useState(furniture.drawers === 'other');
-  const [showCustomStructure, setShowCustomStructure] = useState(furniture.structureMaterial === 'other');
-  const [showCustomDoorColor, setShowCustomDoorColor] = useState(furniture.doorColor === 'other');
-  const [showCustomAccessories, setShowCustomAccessories] = useState(furniture.accessories?.includes('other') || false);
+  const [showCustomType, setShowCustomType] = useState(false);
+  const [showCustomDoors, setShowCustomDoors] = useState(false);
+  const [showCustomDrawers, setShowCustomDrawers] = useState(false);
+  const [showCustomStructure, setShowCustomStructure] = useState(false);
+  const [showCustomDoorColor, setShowCustomDoorColor] = useState(false);
+  const [showCustomAccessories, setShowCustomAccessories] = useState(false);
+
+  // Initialize states based on furniture values
+  useEffect(() => {
+    setShowCustomType(furniture.type === 'other');
+    setShowCustomDoors(furniture.doors === 'other');
+    setShowCustomDrawers(furniture.drawers === 'other');
+    setShowCustomStructure(furniture.structureMaterial === 'other');
+    setShowCustomDoorColor(furniture.doorColor === 'other');
+    setShowCustomAccessories(furniture.accessories?.includes('other') || false);
+  }, [furniture.type, furniture.doors, furniture.drawers, furniture.structureMaterial, furniture.doorColor, furniture.accessories]);
 
   const updateFurniture = (field: string, value: any) => {
     console.log(`Updating furniture field ${field} with value:`, value);
